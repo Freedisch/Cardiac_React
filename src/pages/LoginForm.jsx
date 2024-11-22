@@ -54,7 +54,7 @@ const Login = () => {
 										type="name"
 										id="name"
 										value={name}
-										onChange={(e) => setEmail(e.target.value)} // Bind email input to state
+										onChange={(e) => setName(e.target.value)} // Bind email input to state
 										placeholder="••••••••"
 										className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:outline-none"
 									/>
