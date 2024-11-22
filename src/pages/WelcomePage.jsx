@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import LoginForm from "./LoginForm.jsx";
+import CreatAccount from "./CreateAccount.jsx";
 
 const App = () => {
 	return (
@@ -9,7 +9,7 @@ const App = () => {
 
 			{/* Right Section */}
 			<div>
-				<LoginForm />
+				<CreatAccount />
 			</div>
 		</div>
 	);

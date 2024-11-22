@@ -6,6 +6,7 @@ import { auth } from "../firebaseConfig"; // Import your Firebase configuration
 
 const CreateAccount = () => {
 	const navigate = useNavigate(); // Initialize navigate function
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -42,6 +43,19 @@ const CreateAccount = () => {
 				Please fill in the details to create your account.
 			</p>
 			<form className="space-y-4" onSubmit={handleCreateAccount}>
+				<div>
+					<label htmlFor="email" className="block text-sm mb-1">
+						Name
+					</label>
+					<input
+						type="name"
+						id="name"
+						value={name}
+						onChange={(e) => setEmail(e.target.value)} // Bind email input to state
+						placeholder="••••••••"
+						className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:outline-none"
+					/>
+				</div>
 				<div>
 					<label htmlFor="email" className="block text-sm mb-1">
 						Email
@@ -90,7 +104,7 @@ const CreateAccount = () => {
 			</form>
 			<div className="text-center mt-4 text-sm">
 				Already have an Account?{" "}
-				<a href="/dashboard" className="text-blue-500">
+				<a href="/LOGIN" className="text-blue-500">
 					Login
 				</a>
 			</div>
