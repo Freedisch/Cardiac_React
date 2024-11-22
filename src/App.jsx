@@ -2,28 +2,30 @@ import { Route, Routes, useLocation } from "react-router-dom";
 
 import Sidebar from "./components/common/Sidebar";
 import CalendarPage from "./pages/CalendarPage";
-import DiagnosticToolPage from "./pages/DiagnosticToolPage";
-import FollowUpsPage from "./pages/FollowUpsPage";
-import ReferralPage from "./pages/ReferralPage";
-import PatientsRecordPage from "./pages/PatientsRecordsPage";
-import SettingsPage from "./pages/SettingsPage";
-import OverviewPage from "./pages/OverviewPage";
+import LoginForm from "./pages/LoginForm";
 import CriticalAlertsPage from "./pages/CriticalAlertsPage";
+import DiagnosticToolPage from "./pages/DiagnosticToolPage";
 import EcgInterpreterPage from "./pages/EcgInterpreterPage";
-import PatientInformationPage from "./pages/PatientInformationPage";
-import WelcomePage from "./pages/WelcomePage";
+import FollowUpsPage from "./pages/FollowUpsPage";
 import NewReportPage from "./pages/NewReportPage";
+import OverviewPage from "./pages/OverviewPage";
+import PatientInformationPage from "./pages/PatientInformationPage";
+import PatientsRecordPage from "./pages/PatientsRecordsPage";
 import ReferralCentersPage from "./pages/ReferralCentersPage";
+import ReferralPage from "./pages/ReferralPage";
+import SettingsPage from "./pages/SettingsPage";
 import UpcomingAppointmentPage from "./pages/UpcomingAppointmentPage";
-
+import WelcomePage from "./pages/WelcomePage";
+import CreateAccount from "./pages/CreateAccount";
 
 function App() {
 	const location = useLocation(); // Get the current location
-	const isRoot = location.pathname === "/";
-	// Check if current path is root
+	// Define the paths where the sidebar should not appear
+	const noSidebarPaths = ["/", "/LOGIN"];
+	const hideSidebar = noSidebarPaths.includes(location.pathname);
 
 	console.log("Current Path:", location.pathname); // Debugging
-	console.log("Is Root Path:", isRoot); // Debugging
+	console.log("Hide Sidebar:", hideSidebar); // Debugging
 
 	return (
 		<div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
@@ -34,7 +36,7 @@ function App() {
 			</div>
 
 			{/* Conditionally render Sidebar */}
-			{!isRoot && <Sidebar />}
+			{!hideSidebar && <Sidebar />}
 
 			<Routes>
 				<Route path="/" element={<WelcomePage />} />
@@ -51,6 +53,8 @@ function App() {
 				<Route path="/report" element={<NewReportPage />} />
 				<Route path="/center" element={<ReferralCentersPage />} />
 				<Route path="/appointment" element={<UpcomingAppointmentPage />} />
+				<Route path="/LOGIN" element={<LoginForm />} />
+				<Route path="/CREATE" element={<CreateAccount />} />
 			</Routes>
 		</div>
 	);
