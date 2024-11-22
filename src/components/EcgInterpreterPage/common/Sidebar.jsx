@@ -1,4 +1,4 @@
-import { BarChart2, Users, Menu, Settings, File, Calendar, Monitor, Clipboard } from "lucide-react";
+import { BarChart2, Users, Menu, Settings, File, Calendar, Monitor } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -8,38 +8,14 @@ const SIDEBAR_ITEMS = [
 		name: "Dashboard",
 		icon: BarChart2,
 		color: "#6366f1",
-		href: "/overview",
+		href: "/",
 	},
-	{
-		name: "Patient Records",
-		icon: File,
-		color: "#EC4899",
-		href: "/patient-records",
-	},
-	// {
-	// 	name: "ECG Records",
-	// 	icon: File,
-	// 	color: "#8B5CF6",
-	// 	href: "/ecg-records",
-	// },
+	{ name: "Patient Records", icon: File, color: "#8B5CF6", href: "/patient-records" },
 	{ name: "FollowUps", icon: Calendar, color: "#EC4899", href: "/follow-ups" },
+	{ name: "ECG Diagnostic Tools", icon: Monitor, color: "#10B981", href: "/diagnostics" },
 	{ name: "Referrals", icon: Users, color: "#F59E0B", href: "/referrals" },
-	{
-		name: "Appointments",
-		icon: Clipboard,
-		color: "#10B981",
-		href: "/appointment",
-	},
-
-	{
-		name: "ECG Diagnostic Tools",
-		icon: Monitor,
-		color: "#F59E0B",
-		href: "/diagnostics",
-	},
-	{ name: "Referral Centers", icon: Settings, color: "#6EE7B7", href: "/center" },
 	{ name: "Calendar", icon: Settings, color: "#6EE7B7", href: "/calendar" },
-	{ name: "Settings", icon: Calendar, color: "#6EE7B7", href: "/settings" },
+	{ name: "Settings", icon: Calendar, color: "#6EE7B7", href: "/settings"}
 ];
 
 const Sidebar = () => {
