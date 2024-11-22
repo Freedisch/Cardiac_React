@@ -39,7 +39,6 @@ const Login = () => {
     return (
         <main>
             
-				<section className="flex-1 overflow-auto relative">
 					<div className="flex-1 overflow-auto relative ">
 						<div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-sm w-full mt-24 mr-40 ml-auto">
 							<h2 className="text-2xl font-bold mb-4">Login to Your Account</h2>
@@ -110,7 +109,6 @@ const Login = () => {
 							</div>
 						</div>
 					</div>
-            </section>
             
 			</main>
 		);
