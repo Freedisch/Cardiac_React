@@ -1,9 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { motion } from "framer-motion";
-import { ClipboardCheck, UserCheck, AlertTriangle } from "lucide-react";
-import ECGUploadPage from "../components/EcgInterpreterPage/NewReport";
-import PatientPage from "../components/EcgInterpreterPage/PatientInformation";
+// import { motion } from "framer-motion";
+// import { ClipboardCheck, UserCheck, AlertTriangle } from "lucide-react";
+import ECGUploadPage from "../components/EcgInterpreterPage/NewAnalysis";
 import Header from "../components/common/Header";
 // import RecentReports from "../components/EcgInterpreterPage/RecentReports";
 
@@ -11,7 +10,7 @@ const EcgInterpreterPage = () => {
 	return (
 		<div className="flex-1 overflow-auto relative z-10">
 			{/* Page Header */}
-			<Header title="Welcome, Dr. Gilbert" />
+			<Header title="Analyze ECG" />
 
 			{/* Main Content */}
 			<div className="flex max-w-7xl mx-auto relative py-8 lg:px-4 lg:pl-10 space-x-0">
@@ -27,7 +26,7 @@ const EcgInterpreterPage = () => {
 					</section> */}
 
 					{/* Action Buttons */}
-					<motion.div
+					{/* <motion.div
 						className="flex flex-row justify-between mt-6"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -46,18 +45,13 @@ const EcgInterpreterPage = () => {
 							<AlertTriangle size={20} />
 							<span>Critical Alert</span>
 						</button>
-					</motion.div>
+					</motion.div> */}
 				</div>
 
 				{/* Right Side - Recent Reports */}
 				{/* <div className="w-1/2">
 					<RecentReports />
 				</div> */}
-
-				{/* Right Side - Patient Information */}
-				<div className="w-1/2">
-					<PatientPage />
-				</div>
 			</div>
 		</div>
 	);
