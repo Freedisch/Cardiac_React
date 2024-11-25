@@ -1,100 +1,100 @@
 /* eslint-disable no-unused-vars */
-// src/pages/ReferralPage.jsx
-import React, { useEffect, useState } from "react";
-import Header from "../components/common/Header.jsx";
-import { db } from "./firebase.js"; // Import the Firestore instance
+// src/pages/DiagnosisListPage.jsx
 
-const ReferralPage = () => {
-	const [referralPatients, setReferralPatients] = useState([]);
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import Header from "../components/common/Header.jsx";
+
+const DiagnosisListPage = () => {
+	const [diagnosisData, setDiagnosisData] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const db = getFirestore(); // Firebase Firestore instance
+
+	// Fetch diagnosis data from Firebase Firestore
+	const fetchDiagnosisData = async () => {
+		setLoading(true); // Set loading state to true
+		try {
+			const querySnapshot = await getDocs(collection(db, "diagnosis"));
+			const diagnoses = querySnapshot.docs.map((doc, index) => ({
+				...doc.data(),
+				id: doc.id, // Add Firestore document ID
+			}));
+			console.log("Fetched diagnoses:", diagnoses); // Log the diagnosis data
+			setDiagnosisData(diagnoses); // Set the loaded diagnosis data to the state
+		} catch (error) {
+			console.error("Error fetching diagnosis data:", error);
+		} finally {
+			setLoading(false); // Reset loading state
+		}
+	};
 
 	useEffect(() => {
-		// Fetch referral patient data from Firestore
-		const fetchReferralPatients = async () => {
-			try {
-				const snapshot = await db.collection("referralPatients").get(); // Ensure Firestore collection is correctly named
-				const data = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setReferralPatients(data);
-			} catch (error) {
-				console.error("Error fetching referral patients data: ", error);
-			}
-		};
-
-		fetchReferralPatients();
-	}, []);
+		fetchDiagnosisData(); // Fetch data on page load
+	}, []); // Empty dependency array ensures this runs only once on mount
 
 	return (
 		<div className="flex-1 overflow-auto relative z-10 bg-gray-900">
-			<Header title="Referral Patients" />
-			<main className="max-w-full mx-auto py-6 px-4 lg:px-8">
-				<div className="overflow-auto bg-white rounded-lg shadow-md w-full">
-					<table className="min-w-full bg-gray-800 text-white border-separate border-spacing-0 table-auto">
+			<Header title="Referrals" />
+			<main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+				<div className="overflow-auto bg-white rounded-lg shadow-md">
+					<table className="min-w-full bg-gray-800 text-white">
 						<thead>
 							<tr>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									#
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+									# {/* Row number column */}
 								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									Date
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+									ID
 								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600 ">
-									Name
-								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									Age Category
-								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									ECG Class
-								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									ECG Notes
-								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
 									Diagnosis
 								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									Diagnosis Notes
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+									ECG Classification
 								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
 									Recommendation
 								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
-									FollowUp
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+									Follow Up
 								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider border-r border-gray-600">
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
 									Critical Alert
-								</th>
-								<th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider w-1/6">
-									Referral
 								</th>
 							</tr>
 						</thead>
 						<tbody className="bg-gray-700 divide-y divide-gray-600">
-							{referralPatients.map((patient, index) => (
-								<tr key={index} className="border-b border-gray-600">
-									<td className="px-4 py-2 border-r border-gray-600 text-center">
-										{index + 2}
-									</td>{" "}
-									{/* Row numbering starts from 2 */}
-									<td className="px-4 py-2 border-r border-gray-600 text-center">
-										{patient.Name || "N/A"}
-									</td>
-									<td className="px-4 py-2 border-r border-gray-600 text-center">
-										{patient.Diagnosis || "N/A"}
-									</td>
-									<td className="px-4 py-2 border-r border-gray-600 text-center">
-										{patient.Recommendation || "N/A"}
-									</td>
-									<td className="px-4 py-2 border-r border-gray-600 text-center">
-										{patient.CriticalAlert ? "Yes" : "No"}
-									</td>
-									<td className="px-4 py-2 text-center">
-										{patient.Referral || "N/A"}
+							{diagnosisData.length === 0 ? (
+								<tr>
+									<td
+										colSpan="7"
+										className="px-4 py-3 text-center text-gray-400">
+										No diagnosis data available.
 									</td>
 								</tr>
-							))}
+							) : (
+								diagnosisData.map((diagnosis, index) => (
+									<tr key={diagnosis.id}>
+										<td className="px-4 py-3">{index + 1}</td>{" "}
+										{/* Row number column */}
+										<td className="px-4 py-3">{diagnosis.id}</td>{" "}
+										{/* Firestore Document ID */}
+										<td className="px-4 py-3">
+											{diagnosis.diagnosis || "N/A"}
+										</td>
+										<td className="px-4 py-3">
+											{diagnosis.ECG_Classification || "N/A"}
+										</td>
+										<td className="px-4 py-3">
+											{diagnosis.recommendation || "N/A"}
+										</td>
+										<td className="px-4 py-3">{diagnosis.followUp || "N/A"}</td>
+										<td className="px-4 py-3">
+											{diagnosis.criticalAlert || "N/A"}
+										</td>
+									</tr>
+								))
+							)}
 						</tbody>
 					</table>
 				</div>
@@ -103,4 +103,4 @@ const ReferralPage = () => {
 	);
 };
 
-export default ReferralPage;
+export default DiagnosisListPage;

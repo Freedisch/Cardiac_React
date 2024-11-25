@@ -37,22 +37,26 @@ const CreateAccount = () => {
 	};
 
 	return (
-		<div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-sm w-full mt-24 mr-40 ml-auto">
-			<h2 className="text-2xl font-bold mb-4">Create Your Account</h2>
+		<div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-sm w-full mt-24 mx-auto">
+			<h1 className="text-2xl font-bold mb-4 text-center text-red-500">
+				Welcome to Cardiac TEK
+			</h1>
+
+			<h3 className="text-lg font-bold mb-4">Create Your Account</h3>
 			<p className="text-sm text-gray-400 mb-6">
 				Please fill in the details to create your account.
 			</p>
 			<form className="space-y-4" onSubmit={handleCreateAccount}>
 				<div>
-					<label htmlFor="email" className="block text-sm mb-1">
+					<label htmlFor="name" className="block text-sm mb-1">
 						Name
 					</label>
 					<input
-						type="name"
+						type="text" // Change type to 'text' since it's for name
 						id="name"
 						value={name}
-						onChange={(e) => setEmail(e.target.value)} // Bind email input to state
-						placeholder="••••••••"
+						onChange={(e) => setName(e.target.value)} // Bind name input to the 'name' state
+						placeholder="Your Name"
 						className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:outline-none"
 					/>
 				</div>
@@ -98,13 +102,15 @@ const CreateAccount = () => {
 				{error && <p className="text-red-500 text-sm">{error}</p>}
 				<button
 					type="submit"
-					className="w-full p-2 bg-indigo-600 rounded hover:bg-indigo-500 transition">
-					Create Account
+					className="w-full p-2 bg-red-600 rounded hover:bg-red-500 transition">
+					<a href="/overview" className="text-white">
+						Create Account
+					</a>
 				</button>
 			</form>
 			<div className="text-center mt-4 text-sm">
 				Already have an Account?{" "}
-				<a href="/LOGIN" className="text-blue-500">
+				<a href="/LOGIN" className="text-red-600">
 					Login
 				</a>
 			</div>

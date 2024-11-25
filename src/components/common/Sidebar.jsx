@@ -8,6 +8,7 @@ import {
 	Monitor,
 	Clipboard,
 	LogOut,
+	MapPin,
 } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,10 +22,10 @@ const SIDEBAR_ITEMS = [
 		href: "/overview",
 	},
 	{
-		name: "Patient Records",
+		name: "Diagnostic Records",
 		icon: File,
 		color: "#EC4899",
-		href: "/patient-records",
+		href: "/diagnostic-records",
 	},
 	{ name: "FollowUps", icon: Calendar, color: "#EC4899", href: "/follow-ups" },
 	{ name: "Referrals", icon: Users, color: "#F59E0B", href: "/referrals" },
@@ -42,10 +43,11 @@ const SIDEBAR_ITEMS = [
 	},
 	{
 		name: "Referral Centers",
-		icon: Settings,
-		color: "#6EE7B7",
+		icon: MapPin, // Changed icon to MapPin
+		color: "#FF5733", // Changed color to a red-orange
 		href: "/center",
 	},
+
 	{ name: "Calendar", icon: Settings, color: "#6EE7B7", href: "/calendar" },
 	{ name: "Settings", icon: Calendar, color: "#6EE7B7", href: "/settings" },
 	{

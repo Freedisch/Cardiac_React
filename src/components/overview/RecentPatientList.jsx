@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
 
 const recentECGRecords = [
-	{ name: "John Doe", date: "2024-10-10", diagnosis: "Normal" },
+	{ name: "Ama Kofi", date: "2024-10-10", diagnosis: "Normal" },
 	{
-		name: "Jane Smith",
+		name: "John Brako",
 		date: "2024-10-11",
 		diagnosis: "Myocardial Infarction",
 	},
-	{ name: "Alice Johnson", date: "2024-10-12", diagnosis: "Abnormal Heartbeat" },
-	{ name: "Bob Brown", date: "2024-10-13", diagnosis: "Normal" },
-	{ name: "Charlie White", date: "2024-10-14", diagnosis: "Myocardial Infarction" },
+	{ name: "Rit Serwa", date: "2024-10-12", diagnosis: "Abnormal Heartbeat" },
+	{ name: "Aku Joy", date: "2024-10-13", diagnosis: "Normal" },
+	{ name: "Felicia OB", date: "2024-10-14", diagnosis: "Myocardial Infarction" },
 ];
 
 const ECGRecordsList = () => {

@@ -1,69 +1,100 @@
 /* eslint-disable no-unused-vars */
-// src/pages/CriticalAlertsPage.jsx
+// src/pages/DiagnosisListPage.jsx
 
-import React, { useEffect, useState } from "react";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
 import Header from "../components/common/Header.jsx";
-import { db } from "./firebase.js"; // Ensure Firestore instance is imported
 
-const CriticalAlertPage = () => {
-	const [criticalAlerts, setCriticalAlerts] = useState([]);
+const DiagnosisListPage = () => {
+	const [diagnosisData, setDiagnosisData] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const db = getFirestore(); // Firebase Firestore instance
+
+	// Fetch diagnosis data from Firebase Firestore
+	const fetchDiagnosisData = async () => {
+		setLoading(true); // Set loading state to true
+		try {
+			const querySnapshot = await getDocs(collection(db, "diagnosis"));
+			const diagnoses = querySnapshot.docs.map((doc, index) => ({
+				...doc.data(),
+				id: doc.id, // Add Firestore document ID
+			}));
+			console.log("Fetched diagnoses:", diagnoses); // Log the diagnosis data
+			setDiagnosisData(diagnoses); // Set the loaded diagnosis data to the state
+		} catch (error) {
+			console.error("Error fetching diagnosis data:", error);
+		} finally {
+			setLoading(false); // Reset loading state
+		}
+	};
 
 	useEffect(() => {
-		// Fetch critical alerts data from Firestore
-		const fetchCriticalAlerts = async () => {
-			try {
-				const snapshot = await db.collection("criticalAlerts").get(); // Ensure Firestore collection name is correct
-				const data = snapshot.docs.map((doc) => ({
-					id: doc.id,
-					...doc.data(),
-				}));
-				setCriticalAlerts(data);
-			} catch (error) {
-				console.error("Error fetching critical alerts data: ", error);
-			}
-		};
-
-		fetchCriticalAlerts();
-	}, []);
+		fetchDiagnosisData(); // Fetch data on page load
+	}, []); // Empty dependency array ensures this runs only once on mount
 
 	return (
 		<div className="flex-1 overflow-auto relative z-10 bg-gray-900">
-			<Header title="Welcome Dr. Gilbert" />
+			<Header title="Diagnostic Records" />
 			<main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-				<h2 className="text-white text-2xl mb-4">Critical Alert Patients</h2>
 				<div className="overflow-auto bg-white rounded-lg shadow-md">
 					<table className="min-w-full bg-gray-800 text-white">
 						<thead>
 							<tr>
 								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Name
+									# {/* Row number column */}
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Age Category
+									ID
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Gender
+									Diagnosis
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
 									ECG Classification
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Diagnosis
+									Recommendation
+								</th>
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+									Follow Up
+								</th>
+								<th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+									Critical Alert
 								</th>
 							</tr>
 						</thead>
 						<tbody className="bg-gray-700 divide-y divide-gray-600">
-							{criticalAlerts.map((alert, index) => (
-								<tr key={index} className="border-b border-gray-600">
-									<td className="px-4 py-2">{alert.Name || "N/A"}</td>
-									<td className="px-4 py-2">{alert.AgeCategory || "N/A"}</td>
-									<td className="px-4 py-2">{alert.Sex || "N/A"}</td>
-									<td className="px-4 py-2">
-										{alert.ECG_Classification || "N/A"}
+							{diagnosisData.length === 0 ? (
+								<tr>
+									<td
+										colSpan="7"
+										className="px-4 py-3 text-center text-gray-400">
+										No diagnosis data available.
 									</td>
-									<td className="px-4 py-2">{alert.Diagnosis || "N/A"}</td>
 								</tr>
-							))}
+							) : (
+								diagnosisData.map((diagnosis, index) => (
+									<tr key={diagnosis.id}>
+										<td className="px-4 py-3">{index + 1}</td>{" "}
+										{/* Row number column */}
+										<td className="px-4 py-3">{diagnosis.id}</td>{" "}
+										{/* Firestore Document ID */}
+										<td className="px-4 py-3">
+											{diagnosis.diagnosis || "N/A"}
+										</td>
+										<td className="px-4 py-3">
+											{diagnosis.ECG_Classification || "N/A"}
+										</td>
+										<td className="px-4 py-3">
+											{diagnosis.recommendation || "N/A"}
+										</td>
+										<td className="px-4 py-3">{diagnosis.followUp || "N/A"}</td>
+										<td className="px-4 py-3">
+											{diagnosis.criticalAlert || "N/A"}
+										</td>
+									</tr>
+								))
+							)}
 						</tbody>
 					</table>
 				</div>
@@ -72,4 +103,4 @@ const CriticalAlertPage = () => {
 	);
 };
 
-export default CriticalAlertPage;
+export default DiagnosisListPage;

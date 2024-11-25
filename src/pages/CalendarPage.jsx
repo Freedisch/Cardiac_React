@@ -6,6 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import Header from "../components/common/Header.jsx";
+import { getFirestore, collection, addDoc } from "firebase/firestore"; // Import Firestore methods
 
 const Calendar = () => {
 	const [events, setEvents] = useState([]);
@@ -17,6 +18,8 @@ const Calendar = () => {
 		patientName: "",
 		diagnosis: "",
 	});
+
+	const db = getFirestore(); // Firestore instance
 
 	const calendarContainerStyle = {
 		margin: "20px auto",
@@ -32,16 +35,67 @@ const Calendar = () => {
 		setModalOpen(true);
 	};
 
-	const handleAddEvent = () => {
+	// Function to save new event to Firestore
+	const saveEventToFirestore = async () => {
+		try {
+			// Add new event to Firestore's 'Appointments' collection
+			const docRef = await addDoc(collection(db, "Appointments"), {
+				title: newEvent.title,
+				date: newEvent.date,
+				patientName: newEvent.patientName,
+				diagnosis: newEvent.diagnosis,
+			});
+			console.log("Document written with ID: ", docRef.id); // Log Firestore document ID
+			return docRef.id; // Return Firestore document ID for local state update
+		} catch (e) {
+			console.error("Error adding document: ", e);
+		}
+	};
+
+	const handleAddEvent = async () => {
 		if (
 			newEvent.title &&
 			newEvent.date &&
 			newEvent.patientName &&
 			newEvent.diagnosis
 		) {
-			setEvents([...events, newEvent]);
-			setNewEvent({ title: "", date: "", patientName: "", diagnosis: "" });
-			setModalOpen(false);
+			try {
+				// Fix the date format issue
+				const formattedDate = new Date(newEvent.date);
+				if (isNaN(formattedDate)) {
+					alert("Invalid date format.");
+					return;
+				}
+
+				// Add the event to Firestore
+				const docRef = await addDoc(collection(db, "Appointments"), {
+					title: newEvent.title,
+					date: formattedDate, // Store the date as a JavaScript Date object
+					patientName: newEvent.patientName,
+					diagnosis: newEvent.diagnosis,
+				});
+
+				console.log("Document written with ID: ", docRef.id);
+
+				// Add event to local state to update the calendar
+				setEvents([
+					...events,
+					{
+						title: newEvent.title,
+						date: formattedDate, // Store date in state as a Date object
+						patientName: newEvent.patientName,
+						diagnosis: newEvent.diagnosis,
+					},
+				]);
+
+				// Reset form and close modal
+				setNewEvent({ title: "", date: "", patientName: "", diagnosis: "" });
+				setModalOpen(false);
+			} catch (e) {
+				console.error("Error adding document: ", e);
+			}
+		} else {
+			alert("Please fill in all fields.");
 		}
 	};
 
